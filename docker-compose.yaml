@@ -1,37 +1,39 @@
-version: "3.7"
+version: "3.5"
 services:
   db:
     container_name: db
     image: mysql
-    # command: '--default-authentication-plugin=mysql_native_password'
     restart: always
-    # volumes:
-    #   - db-data:/var/lib/mysql
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: people
     networks:
       - backend
-  app:
-    container_name: app
+  flask:
+    container_name: flask
     build: app
     restart: on-failure
+    expose:
+      - 5000
     depends_on:
       - db
     networks:
       - backend
       - frontend
   web:
-    container_name: web
-    build: web
+    container_name: proxy
+    image: nginx:latest
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./proxy/html:/usr/share/nginx/html
+      - ./proxy/ssl:/etc/nginx/ssl
     restart: always
     ports:
       - 80:80
+      - 443:443
     networks:
       - frontend
-# volumes:
-#     db-data:
 networks:
   backend:
   frontend:
