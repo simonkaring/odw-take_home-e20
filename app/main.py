@@ -6,8 +6,8 @@ app = Flask(__name__)
 database = None
 database = Database()
 database.create_db()
-database.populate_db("Mads", "Jensen")
-database.populate_db("Mathias", "Neerup")
+database.insert("Mads", "Jensen")
+database.insert("Mathias", "Neerup")
 
 
 @app.route('/persons')
