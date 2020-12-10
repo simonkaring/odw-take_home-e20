@@ -1,8 +1,11 @@
 FROM python
-WORKDIR /src
-COPY requirements.txt .
+
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+
 RUN pip install -r requirements.txt
-COPY ./src /src
+
 EXPOSE 5000
-CMD python server.py
+
+CMD python3 flask.py
  
